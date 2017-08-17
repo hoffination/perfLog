@@ -38,57 +38,67 @@ function countScopeWatchers(scope) {
 }
 
 function analyzePerformance() {
-	const performance = window.performance;
-	const navigator = window.navigator;
+	try {
+		const performance = window.performance;
+		const navigator = window.navigator;
 
-	const host = new URL(window.location.href).host;
+		const host = new URL(window.location.href).host;
 
-	const entries = performance.getEntries();
+		const entries = performance.getEntries();
 
-	const scriptEntries = entries.filter(e => sameHostValid(e, 'script', host));
-	const scriptValues = {
-		totalDuration: sumReduction(scriptEntries, 'duration'),
-		totalSize: sumReduction(scriptEntries, 'encodedBodySize')
+		const scriptEntries = entries.filter(e => sameHostValid(e, 'script', host));
+		const scriptValues = {
+			totalDuration: sumReduction(scriptEntries, 'duration'),
+			totalSize: sumReduction(scriptEntries, 'encodedBodySize')
+		}
+
+		const linkEntries = entries.filter(e => sameHostValid(e, 'link', host));
+		const linkValues = {
+			totalDuration: sumReduction(linkEntries, 'duration'),
+			totalSize: sumReduction(linkEntries, 'encodedBodySize')
+		}
+
+		const xmlRequests = entries.filter(e => sameHostValid(e, 'xmlhttprequest', host));
+		const xmlRequestValues = {
+			totalDuration: sumReduction(xmlRequests, 'duration'),
+			totalSize: sumReduction(xmlRequests, 'encodedBodySize')
+		}
+
+		const paintEntries = performance.getEntriesByType('paint');
+		let firstPaint, firstContentfulPaint;
+		if (paintEntries.length > 1) {
+			firstPaint = paintEntries.filter(e => e.name === 'first-paint')[0].startTime;
+			firstContentfulPaint = paintEntries.filter(e => e.name === 'first-contentful-paint')[0].startTime;
+		}
+
+		return {
+			host,
+			href: window.location.href,
+			load: performance.timing,
+			navigationEntry: entries[0],
+			paint: { firstPaint, firstContentfulPaint },
+			styles: linkValues,
+			scripts: scriptValues,
+			memory: {
+				used: performance.memory.usedJSHeapSize,
+				total: performance.memory.totalJSHeapSize
+			},
+			xmlRequestValues,
+			meta: {
+				platform: navigator.platform,
+				product: navigator.product,
+				vendor: navigator.vendor
+			},
+			timestamp: Date.now(),
+			angular: {
+				watchers: annotateWatchers(document.documentElement)
+			},
+			version: VERSION // variable created by webpack build
+		}
 	}
-
-	const linkEntries = entries.filter(e => sameHostValid(e, 'link', host));
-	const linkValues = {
-		totalDuration: sumReduction(linkEntries, 'duration'),
-		totalSize: sumReduction(linkEntries, 'encodedBodySize')
-	}
-
-	const xmlRequests = entries.filter(e => sameHostValid(e, 'xmlhttprequest', host));
-	const xmlRequestValues = {
-		totalDuration: sumReduction(xmlRequests, 'duration'),
-		totalSize: sumReduction(xmlRequests, 'encodedBodySize')
-	}
-
-	const paintEntries = performance.getEntriesByType('paint');
-	let firstPaint, firstContentfulPaint;
-	if (paintEntries.length > 1) {
-		firstPaint = paintEntries.filter(e => e.name === 'first-paint')[0].startTime;
-		firstContentfulPaint = paintEntries.filter(e => e.name === 'first-contentful-paint')[0].startTime;
-	}
-
-	return {
-		host,
-		href: window.location.href,
-		load: performance.timing,
-		paint: { firstPaint, firstContentfulPaint },
-		styles: linkValues,
-		scripts: scriptValues,
-		memory: performance.memory,
-		xmlRequestValues,
-		meta: {
-			platform: navigator.platform,
-			product: navigator.product,
-			vendor: navigator.vendor
-		},
-		timestamp: Date.now(),
-		angular: {
-			watchers: annotateWatchers(document.documentElement)
-		},
-		version: VERSION
+	catch(e) {
+		console.log(e);
+		return {};
 	}
 }
 
@@ -110,7 +120,8 @@ function performanceOnLoad(callback) {
 }
 
 function storeValues(performanceValues) {
-	localStorage.setItem(KEY, JSON.stringify(performanceValues));
+	if (performanceValues && Object.keys(performanceValues) > 0)
+		localStorage.setItem(KEY, JSON.stringify(performanceValues));
 }
 
 function getStoredValues() {
