@@ -1,3 +1,5 @@
+const KEY = 'perf-log';
+
 function sameHostValid(entry, type, host) {
 	if (entry.initiatorType !== type) {
 		return false;
@@ -62,8 +64,11 @@ function analyzePerformance() {
 	}
 
 	const paintEntries = performance.getEntriesByType('paint');
-	const firstPaint = paintEntries.filter(e => e.name === 'first-paint')[0].startTime;
-	const firstContentfulPaint = paintEntries.filter(e => e.name === 'first-contentful-paint')[0].startTime;
+	let firstPaint, firstContentfulPaint;
+	if (paintEntries.length > 1) {
+		firstPaint = paintEntries.filter(e => e.name === 'first-paint')[0].startTime;
+		firstContentfulPaint = paintEntries.filter(e => e.name === 'first-contentful-paint')[0].startTime;
+	}
 
 	return {
 		host,
@@ -82,10 +87,41 @@ function analyzePerformance() {
 		timestamp: Date.now(),
 		angular: {
 			watchers: annotateWatchers(document.documentElement)
-		}
+		},
+		version: VERSION
 	}
 }
 
-module.export = {
-	analyzePerformance
+function performanceOnLoad(callback) {
+	let elements = 0;
+	const interval = setInterval(() => {
+		window.requestAnimationFrame(() => {
+			let currentElements = document.getElementsByTagName('*').length;
+			console.log(currentElements);
+
+			if (currentElements === elements) {
+				clearInterval(interval);
+				return callback(analyzePerformance());
+			} else {
+				elements = currentElements;
+			}
+		})
+	}, 2000);
 }
+
+function storeValues(performanceValues) {
+	localStorage.setItem(KEY, JSON.stringify(performanceValues));
+}
+
+function getStoredValues() {
+	return JSON.parse(localStorage.getItem(KEY));
+}
+
+module.exports = {
+	analyzePerformance,
+	performanceOnLoad,
+	storeValues,
+	getStoredValues
+};
+
+// Single line usage: performanceOnLoad(storeValues);
