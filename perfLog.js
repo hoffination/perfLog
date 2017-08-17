@@ -6,39 +6,39 @@ function sameHostValid(entry, type, host) {
 }
 
 function sumReduction(array, attribute) {
-	return array.reduce((a,b) => a + (b[attribute] || 0), 0);
+	return array.reduce((a, b) => a + (b[attribute] || 0), 0);
 }
 
 // Bookmarklet tool
 function annotateWatchers(elem) {
-    elem = angular.element(elem);
-    var selfWatchers = countWatchers(elem),
-        totalWatchers = selfWatchers;
-    angular.forEach(elem.children(), function(child) {
-        totalWatchers += annotateWatchers(child);
-    });
-    elem.attr('data-watchers', selfWatchers + ',' + totalWatchers);
-    return totalWatchers;
+	elem = angular.element(elem);
+	var selfWatchers = countWatchers(elem),
+		totalWatchers = selfWatchers;
+	angular.forEach(elem.children(), function (child) {
+		totalWatchers += annotateWatchers(child);
+	});
+	elem.attr('data-watchers', selfWatchers + ',' + totalWatchers);
+	return totalWatchers;
 }
 
 function countWatchers(elem) {
-    if (!elem || !elem.data) {
-        return 0;
-    }
-    return countScopeWatchers(elem.data().$scope) + countScopeWatchers(elem.data().$isolateScope);
+	if (!elem || !elem.data) {
+		return 0;
+	}
+	return countScopeWatchers(elem.data().$scope) + countScopeWatchers(elem.data().$isolateScope);
 }
 
 function countScopeWatchers(scope) {
-    if (!scope || !scope.$$watchers) {
-        return 0;
-    }
-    return scope.$$watchers.length;
+	if (!scope || !scope.$$watchers) {
+		return 0;
+	}
+	return scope.$$watchers.length;
 }
 
 function analyzePerformance() {
 	const performance = window.performance;
 	const navigator = window.navigator;
-	
+
 	const host = new URL(window.location.href).host;
 
 	const entries = performance.getEntries();
