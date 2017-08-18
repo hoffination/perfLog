@@ -1,0 +1,85 @@
+{
+    "host": "fiddle.jshell.net",
+    "href": "https://fiddle.jshell.net/_display/",
+    "load": {
+        "navigationStart": 1503024530240,
+        "unloadEventStart": 1503024530668,
+        "unloadEventEnd": 1503024530668,
+        "redirectStart": 0,
+        "redirectEnd": 0,
+        "fetchStart": 1503024530242,
+        "domainLookupStart": 1503024530245,
+        "domainLookupEnd": 1503024530294,
+        "connectStart": 1503024530294,
+        "connectEnd": 1503024530479,
+        "secureConnectionStart": 1503024530384,
+        "requestStart": 1503024530479,
+        "responseStart": 1503024530665,
+        "responseEnd": 1503024530667,
+        "domLoading": 1503024530673,
+        "domInteractive": 1503024530902,
+        "domContentLoadedEventStart": 1503024530902,
+        "domContentLoadedEventEnd": 1503024530907,
+        "domComplete": 1503024530908,
+        "loadEventStart": 1503024530908,
+        "loadEventEnd": 0
+    },
+    "navigationEntry": {
+        "name": "https://fiddle.jshell.net/_display/",
+        "entryType": "navigation",
+        "startTime": 0,
+        "duration": 0,
+        "initiatorType": "navigation",
+        "workerStart": 0,
+        "redirectStart": 0,
+        "redirectEnd": 0,
+        "fetchStart": 1.6500000000000001,
+        "domainLookupStart": 0,
+        "domainLookupEnd": 0,
+        "connectStart": 0,
+        "connectEnd": 0,
+        "secureConnectionStart": 0,
+        "requestStart": 0,
+        "responseStart": 0,
+        "responseEnd": 427.47,
+        "transferSize": 1973,
+        "encodedBodySize": 1750,
+        "decodedBodySize": 4454,
+        "unloadEventStart": 427.69,
+        "unloadEventEnd": 428.415,
+        "domInteractive": 662.09,
+        "domContentLoadedEventStart": 662.445,
+        "domContentLoadedEventEnd": 666.985,
+        "domComplete": 668.32,
+        "loadEventStart": 668.35,
+        "loadEventEnd": 0,
+        "type": "navigate",
+        "redirectCount": 0
+    },
+    "paint": {},
+    "styles": {
+        "totalDuration": 97.51500000000004,
+        "totalSize": 0
+    },
+    "scripts": {
+        "totalDuration": 0,
+        "totalSize": 0
+    },
+    "memory": {
+        "used": 42100000,
+        "total": 60300000
+    },
+    "xmlRequestValues": {
+        "totalDuration": 0,
+        "totalSize": 0
+    },
+    "meta": {
+        "platform": "Win32",
+        "product": "Gecko",
+        "vendor": "Google Inc."
+    },
+    "timestamp": 1503024530911,
+    "angular": {
+        "watchers": 0
+    }
+}

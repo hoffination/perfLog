@@ -1,0 +1,28 @@
+{
+	"extends": "angular",
+	"globals": {
+		"angular": true
+	},
+	"plugins": [
+		"angular"
+	],
+	"settings": {
+		"angular": 1
+	},
+	"env": {
+		"es6": true
+	},
+	"rules": {
+        angular/di: [2,"array"],
+        angular/controller-name: 1,
+        angular/service-name: 1,
+        angular/window-service: 1,
+        angular/on-watch: 1,
+        angular/no-service-method: 1,
+        angular/no-services: 0,
+        angular/controller-as-vm: 1,
+        angular/module-getter: 1,
+        angular/module-setter: 1,
+        angular/log: 1
+	}
+}
