@@ -1,15 +1,15 @@
 angular.module('perfLog')
-    .directive('stackedLineChart', ['commitmentCSV', 'browserTSV', function (commitmentCSV, browserTSV) {
+    .directive('stackedLineChart', ['commitmentCSV', 'stackedAreaChartTSV', function(commitmentCSV, stackedAreaChartTSV) {
         return {
             restrict: 'E',
             replace: false,
             scope: {},
             templateUrl: 'directives/stackedLineChart/stackedLineChart.html',
-            link: function (scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 var csv = commitmentCSV;
-                var tsv = browserTSV;
+                var tsv = stackedAreaChartTSV;
 
-                var svg = d3.select("svg");
+                var svg = d3.select("svg#stacked-line-chart");
                 var margin = { top: 20, right: 20, bottom: 30, left: 50 };
                 var width = svg.attr("width") - margin.left - margin.right;
                 var height = svg.attr("height") - margin.top - margin.bottom;
@@ -23,9 +23,9 @@ angular.module('perfLog')
                 var stack = d3.stack();
 
                 var area = d3.area()
-                    .x(function (d, i) { return x(d.data.date); })
-                    .y0(function (d) { return y(d[0]); })
-                    .y1(function (d) { return y(d[1]); });
+                    .x(function(d, i) { return x(d.data.date); })
+                    .y0(function(d) { return y(d[0]); })
+                    .y1(function(d) { return y(d[1]); });
 
                 var g = svg.append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -35,7 +35,7 @@ angular.module('perfLog')
 
                 var keys = data.columns.slice(1);
 
-                x.domain(d3.extent(data, function (d) { return d.date; }));
+                x.domain(d3.extent(data, function(d) { return d.date; }));
                 z.domain(keys);
                 stack.keys(keys);
 
@@ -46,17 +46,17 @@ angular.module('perfLog')
 
                 layer.append("path")
                     .attr("class", "area")
-                    .style("fill", function (d) { return z(d.key); })
+                    .style("fill", function(d) { return z(d.key); })
                     .attr("d", area);
 
-                layer.filter(function (d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
+                layer.filter(function(d) { return d[d.length - 1][1] - d[d.length - 1][0] > 0.01; })
                     .append("text")
                     .attr("x", width - 6)
-                    .attr("y", function (d) { return y((d[d.length - 1][0] + d[d.length - 1][1]) / 2); })
+                    .attr("y", function(d) { return y((d[d.length - 1][0] + d[d.length - 1][1]) / 2); })
                     .attr("dy", ".35em")
                     .style("font", "10px sans-serif")
                     .style("text-anchor", "end")
-                    .text(function (d) { return d.key; });
+                    .text(function(d) { return d.key; });
 
                 g.append("g")
                     .attr("class", "axis axis--x")

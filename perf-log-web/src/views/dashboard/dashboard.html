@@ -1,15 +1,28 @@
 <div id="dashboard-view">
-	<h3>Dashboard View</h3>
-	<stacked-line-chart></stacked-line-chart>
-	<div id="chart">
-		<div id="footer">
-			<div class="title">Ireland Power [MW]</div>
-			<div class="legend"></div>
-			<div class="times"></div>
-			<div class="hint">click or option-click to toggle zoom</div>
-		</div>
+	<h1>Billing</h1>
+
+	<div><label>Avg DOM Duration: {{$dashboardCtrl.dom.avg}} (ms)</label>
+		<area-chart chart-data="$dashboardCtrl.dom.timeline" id-name="dom-timeline" title-name="DOM Load Duration" y-axis-title="Duration (ms)"></area-chart>
 	</div>
-
-
-	<bar-chart chart-data="$dashboardCtrl.barChartData"></bars-chart>
+	<div><label>Avg Angular Watchers: {{$dashboardCtrl.angular.watchers.avg}}</label>
+		<area-chart chart-data="$dashboardCtrl.angular.watchers.timeline" id-name="angular-watchers-timeline" title-name="Angular Watchers" y-axis-title="Number of Watchers"></area-chart>
+	</div>
+	<div><label>Avg Styles Size: {{$dashboardCtrl.styles.size.avg}} (B)</label>
+		<area-chart chart-data="$dashboardCtrl.styles.size.timeline" id-name="styles-size-timeline" title-name="Styles Size" y-axis-title="Size (B)"></area-chart>
+	</div>
+	<div><label>Avg Styles Duration: {{$dashboardCtrl.styles.duration.avg}} (ms)</label>
+		<area-chart chart-data="$dashboardCtrl.styles.duration.timeline" id-name="styles-duration-timeline" title-name="Styles Duration" y-axis-title="Duration (ms)"></area-chart>
+	</div>
+	<div><label>Avg Scripts Size: {{$dashboardCtrl.scripts.size.avg}} (B)</label>
+		<area-chart chart-data="$dashboardCtrl.scripts.size.timeline" id-name="scripts-size-timeline" title-name="Scripts Size" y-axis-title="Size (B)"></area-chart>
+	</div>
+	<div><label>Avg Scripts Duration: {{$dashboardCtrl.scripts.duration.avg}} (ms)</label>
+		<area-chart chart-data="$dashboardCtrl.scripts.duration.timeline" id-name="scripts-duration-timeline" title-name="Scripts Duration" y-axis-title="Duration (ms)"></area-chart>
+	</div>
+	<div><label>Avg Requests Size: {{$dashboardCtrl.requests.size.avg}} (B)</label>
+		<area-chart chart-data="$dashboardCtrl.requests.size.timeline" id-name="requests-size-timeline" title-name="Requests Size" y-axis-title="Size (B)"></area-chart>
+	</div>
+	<div><label>Avg Requests Duration: {{$dashboardCtrl.requests.duration.avg}} (ms)</label>
+		<area-chart chart-data="$dashboardCtrl.requests.duration.timeline" id-name="requests-duration-timeline" title-name="Requests Duration" y-axis-title="Duration (ms)"></area-chart>
+	</div>
 </div>
